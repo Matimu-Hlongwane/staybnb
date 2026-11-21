@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Guest Dashboard";
+}
+
+<div class="py-5">
+    <p class="text-uppercase small fw-semibold" style="color:#a45f3b;letter-spacing:2px;">Welcome to Staybnb</p>
+    <h1 class="display-5 fw-bold">Your next stay starts here.</h1>
+    <p class="text-secondary fs-5">Explore accommodation options and find a place for your next trip.</p>
+    <a asp-controller="Properties" asp-action="Index" class="btn btn-dark btn-lg mt-2">Explore stays</a>
+    <a asp-controller="Bookings" asp-action="MyBookings" class="btn btn-outline-dark btn-lg mt-2">My bookings</a>
+    <a asp-controller="HostApplications" asp-action="Create" class="btn btn-outline-dark btn-lg mt-2">Become a host</a>
+</div>

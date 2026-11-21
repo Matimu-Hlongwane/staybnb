@@ -1,0 +1,9 @@
+bin/
+obj/
+backups/
+.vs/
+*.pdf
+*.db
+*.db-shm
+*.db-wal
+.DS_Store

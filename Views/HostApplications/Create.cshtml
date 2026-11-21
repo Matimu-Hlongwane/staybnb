@@ -1,0 +1,120 @@
+@model Staybnb.Models.HostApplication
+
+@{
+    ViewData["Title"] = "Apply to Become a Host";
+}
+
+<div class="container py-4">
+    <h1>Apply to Become a Host</h1>
+    <p class="text-muted">
+        Submit your property details for administrator review.
+    </p>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Create"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">
+                        Property title
+                    </label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description"
+                           class="form-label"></label>
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="4"></textarea>
+                    <span asp-validation-for="Description"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PricePerNight"
+                           class="form-label">
+                        Price per night (R)
+                    </label>
+                    <input asp-for="PricePerNight"
+                           type="number"
+                           min="1"
+                           step="0.01"
+                           class="form-control" />
+                    <span asp-validation-for="PricePerNight"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address"
+                           class="form-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="City" class="form-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PropertyType"
+                           class="form-label">
+                        Property type
+                    </label>
+                    <select asp-for="PropertyType"
+                            class="form-select">
+                        <option value="">Select a property type</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="House">House</option>
+                        <option value="Guesthouse">Guesthouse</option>
+                        <option value="Room">Room</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="PropertyType"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="propertyImage"
+                           class="form-label">
+                        Property image (required)
+                    </label>
+                    <input type="file"
+                           id="propertyImage"
+                           name="propertyImage"
+                           class="form-control"
+                           accept=".jpg,.jpeg,.png,.webp"
+                           required />
+                    <div class="form-text">
+                        JPG, PNG or WEBP. Maximum size: 5 MB.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Submit application
+                </button>
+
+                <a asp-action="MyApplications"
+                   class="btn btn-outline-secondary ms-2">
+                    My applications
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

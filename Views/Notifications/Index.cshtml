@@ -1,0 +1,44 @@
+@model IEnumerable<Staybnb.Models.StaybnbNotification>
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<section class="py-4">
+    <h1 class="fw-bold mb-2">Notifications</h1>
+    <p class="text-secondary mb-4">Updates related to your Staybnb account.</p>
+
+    @if (!Model.Any())
+    {
+        <div class="rounded-4 p-5 text-center" style="background:#f4f0e9;">
+            <h2 class="h5">You're all caught up</h2>
+            <p class="text-secondary mb-0">New updates will appear here.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var notification in Model)
+        {
+            <article class="card border-0 shadow-sm rounded-4 mb-3">
+                <div class="card-body p-4 d-flex flex-wrap justify-content-between gap-3">
+                    <div>
+                        <h2 class="h5 fw-bold">@notification.Title
+                            @if (!notification.IsRead)
+                            {
+                                <span class="badge text-bg-warning">Unread</span>
+                            }
+                        </h2>
+                        <p class="mb-1">@notification.Message</p>
+                        <small class="text-secondary">@notification.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</small>
+                    </div>
+                    @if (!notification.IsRead)
+                    {
+                        <form asp-action="MarkRead" method="post">
+                            <input type="hidden" name="id" value="@notification.Id" />
+                            <button class="btn btn-outline-dark" type="submit">Mark as read</button>
+                        </form>
+                    }
+                </div>
+            </article>
+        }
+    }
+</section>

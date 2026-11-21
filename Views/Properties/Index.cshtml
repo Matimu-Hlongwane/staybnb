@@ -1,0 +1,94 @@
+@model IEnumerable<Staybnb.Models.HostApplication>
+
+@{
+    ViewData["Title"] = "Explore Stays";
+}
+
+<section class="py-4">
+    <div class="mb-4">
+        <p class="text-uppercase fw-semibold small mb-2" style="color:#b36b45; letter-spacing:2px;">
+            Find your next getaway
+        </p>
+        <h1 class="display-5 fw-bold">Explore stays</h1>
+        <p class="text-secondary">
+            Discover places to stay, reviewed and approved by Staybnb.
+        </p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="p-5 rounded-4 text-center" style="background:#f4f0e9;">
+            <h2 class="h4">New stays are on the way</h2>
+            <p class="text-secondary mb-0">
+                There are no approved properties available just yet. Please check again soon.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var property in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        @if (property.Images.Any())
+                        {
+                            <img src="@property.Images.First().ImageUrl"
+                                 class="card-img-top"
+                                 alt="@property.Title"
+                                 style="height:230px; object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center justify-content-center"
+                                 style="height:230px; background:#e9e2d7; color:#65594c;">
+                                <span>No property photo</span>
+                            </div>
+                        }
+
+                        <div class="card-body p-4">
+                            <p class="small text-uppercase fw-semibold mb-2"
+                               style="color:#a45f3b;">
+                                @property.PropertyType
+                            </p>
+                            <h2 class="h5 fw-bold">@property.Title</h2>
+                            <p class="text-secondary small mb-3">
+                                <span aria-hidden="true">⌖</span>
+                                @property.City
+                            </p>
+                            <p class="text-secondary">
+                                @(property.Description.Length > 130
+                                    ? property.Description[..130] + "..."
+                                    : property.Description)
+                            </p>
+                            <div class="border-top pt-3 mt-3">
+                                <strong class="fs-5">
+                                    @property.PricePerNight.ToString("C", new System.Globalization.CultureInfo("en-ZA"))
+                                </strong>
+                                <span class="text-secondary small"> / night</span>
+                            </div>
+                            <p class="small text-secondary mt-2 mb-3">@property.Address</p>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <a asp-controller="Bookings"
+                                   asp-action="Create"
+                                   asp-route-propertyId="@property.Id"
+                                   class="btn btn-dark w-100">
+                                    Book this stay
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account"
+                                   asp-action="Login"
+                                   class="btn btn-outline-dark w-100">
+                                    Sign in to book
+                                </a>
+                            }
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    }
+</section>

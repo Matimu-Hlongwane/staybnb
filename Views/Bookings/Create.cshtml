@@ -1,0 +1,67 @@
+@model Staybnb.Models.BookingCreateViewModel
+
+@{
+    ViewData["Title"] = "Request a booking";
+}
+
+<section class="py-4">
+    <div class="mb-4">
+        <p class="text-uppercase small fw-semibold" style="color:#a45f3b; letter-spacing:2px;">
+            Plan your stay
+        </p>
+        <h1 class="fw-bold">Request a booking</h1>
+        <p class="text-secondary">@Model.PropertyTitle · @Model.PropertyCity</p>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4" style="max-width:650px;">
+        <div class="card-body p-4 p-md-5">
+            <div class="mb-4">
+                <span class="fs-4 fw-bold">
+                    @Model.PricePerNight.ToString("C", new System.Globalization.CultureInfo("en-ZA"))
+                </span>
+                <span class="text-secondary"> per night</span>
+            </div>
+
+            <form asp-action="Create" method="post">
+                <input asp-for="HostApplicationId" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="CheckIn" class="form-label">Check-in</label>
+                    <input asp-for="CheckIn" type="date" class="form-control"
+                           min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="CheckIn" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CheckOut" class="form-label">Check-out</label>
+                    <input asp-for="CheckOut" type="date" class="form-control"
+                           min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="CheckOut" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="TravellerCount" class="form-label">Number of travellers</label>
+                    <input asp-for="TravellerCount" type="number" min="1" max="20"
+                           class="form-control" />
+                    <span asp-validation-for="TravellerCount" class="text-danger"></span>
+                </div>
+
+                <p class="small text-secondary">
+                    Your total is calculated securely using the property's price and the number of nights.
+                    Your request remains pending until the host responds.
+                </p>
+
+                <button type="submit" class="btn btn-dark w-100 py-2">
+                    Submit booking request
+                </button>
+                <a asp-controller="Properties" asp-action="Index"
+                   class="btn btn-outline-secondary w-100 mt-2">Back to stays</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

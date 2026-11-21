@@ -1,0 +1,48 @@
+@model IEnumerable<Staybnb.Models.HostApplication>
+@{
+    ViewData["Title"] = "Host Dashboard";
+}
+
+<div class="py-4">
+    <p class="text-uppercase small fw-semibold" style="color:#a45f3b;letter-spacing:2px;">Your Staybnb space</p>
+    <h1 class="display-5 fw-bold">Host dashboard</h1>
+    <p class="text-secondary">Manage your applications and follow their review progress.</p>
+
+    <div class="d-flex flex-wrap gap-2 my-4">
+        <a asp-controller="HostApplications" asp-action="Create" class="btn btn-dark">Apply to list a property</a>
+        <a asp-controller="HostApplications" asp-action="MyApplications" class="btn btn-outline-dark">View my applications</a>
+        <a asp-controller="Bookings" asp-action="HostRequests" class="btn btn-outline-dark">Manage booking requests</a>
+    </div>
+
+    <h2 class="h4 mt-4 mb-3">Your latest applications</h2>
+    @if (!Model.Any())
+    {
+        <div class="rounded-4 p-4" style="background:#f4f0e9;">
+            <h3 class="h5">No applications yet</h3>
+            <p class="text-secondary mb-0">When you apply to list a property, its status will appear here.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr><th>Property</th><th>City</th><th>Status</th><th>Submitted</th></tr>
+                </thead>
+                <tbody>
+                @foreach (var application in Model)
+                {
+                    <tr>
+                        <td>@application.Title</td>
+                        <td>@application.City</td>
+                        <td>
+                            <span class="badge rounded-pill text-bg-light border">@application.Status</span>
+                        </td>
+                        <td>@application.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

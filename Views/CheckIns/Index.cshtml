@@ -1,0 +1,84 @@
+@model IEnumerable<Staybnb.Models.CheckInRecord>
+@{
+    ViewData["Title"] = "Check-in and verification";
+}
+
+<section class="py-4">
+    <h1 class="fw-bold mb-2">Check-in and identity verification</h1>
+    <p class="text-secondary mb-4">
+        Review verification requests and track guest check-in status.
+    </p>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-warning">@TempData["Error"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="rounded-4 p-5 text-center" style="background:#f4f0e9;">
+            <h2 class="h5">No verification records</h2>
+            <p class="text-secondary mb-0">Approved bookings and submitted verification requests will appear here.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var record in Model)
+        {
+            <article class="card border-0 shadow-sm rounded-4 mb-3">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap justify-content-between gap-3">
+                        <div>
+                            <h2 class="h5 fw-bold">@(record.Booking?.Property?.Title ?? "Stay")</h2>
+                            <p class="text-secondary mb-1">
+                                Stay: @record.Booking?.CheckIn.ToString("dd MMM yyyy")
+                                – @record.Booking?.CheckOut.ToString("dd MMM yyyy")
+                            </p>
+                            <p class="mb-1">Document type: @record.DocumentType</p>
+                            <p class="mb-1">Verification: <strong>@record.VerificationStatus</strong></p>
+                            <p class="mb-1">Check-in: <strong>@record.CheckInStatus</strong></p>
+                            <small class="text-secondary">
+                                Submitted @record.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")
+                            </small>
+                            @if (!string.IsNullOrWhiteSpace(record.ReviewNotes))
+                            {
+                                <p class="mt-2 mb-0"><strong>Review notes:</strong> @record.ReviewNotes</p>
+                            }
+                        </div>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Host"))
+                        {
+                            <div class="d-flex flex-column gap-2 align-items-start">
+                                @if (record.VerificationStatus == "Pending")
+                                {
+                                    <form asp-action="Review" method="post" class="d-flex flex-column gap-2">
+                                        <input type="hidden" name="id" value="@record.Id" />
+                                        <input type="text" name="notes" maxlength="500"
+                                               class="form-control" placeholder="Optional review notes" />
+                                        <div class="d-flex gap-2">
+                                            <button name="decision" value="Approve" class="btn btn-dark" type="submit">Verify</button>
+                                            <button name="decision" value="Reject" class="btn btn-outline-danger" type="submit">Reject</button>
+                                        </div>
+                                    </form>
+                                }
+                                @if (record.VerificationStatus == "Verified" &&
+                                     record.Booking?.Status == "Approved" &&
+                                     record.CheckInStatus != "Checked In")
+                                {
+                                    <form asp-action="MarkCheckedIn" method="post">
+                                        <input type="hidden" name="id" value="@record.Id" />
+                                        <button class="btn btn-dark" type="submit">Mark checked in</button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </article>
+        }
+    }
+</section>

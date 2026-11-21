@@ -1,0 +1,71 @@
+@model List<Staybnb.Models.UserRoleViewModel>
+@{
+    ViewData["Title"] = "User Management";
+    var availableRoles = ViewBag.AvailableRoles as string[]
+        ?? new[] { "Guest", "Host", "Admin", "SuperAdmin" };
+}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <p class="text-uppercase small text-secondary mb-1">Administration</p>
+        <h1 class="h2">User Management</h1>
+        <p class="text-secondary">
+            Review accounts and manage application roles. This page is restricted
+            to SuperAdmins.
+        </p>
+    </div>
+
+    @if (TempData["Success"] is string success)
+    {
+        <div class="alert alert-success">@success</div>
+    }
+    @if (TempData["Error"] is string error)
+    {
+        <div class="alert alert-danger">@error</div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Current role</th>
+                    <th>Change role</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var account in Model)
+            {
+                <tr>
+                    <td>@account.Email</td>
+                    <td><span class="badge bg-secondary">@account.CurrentRole</span></td>
+                    <td>
+                        <form asp-action="ChangeRole" method="post"
+                              class="d-flex gap-2 flex-wrap">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="userId" value="@account.Id" />
+                            <select name="role" class="form-select"
+                                    style="max-width: 180px" required>
+                                @foreach (var role in availableRoles)
+                                {
+                                    if (role == account.CurrentRole)
+                                    {
+                                        <option value="@role" selected>@role</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@role">@role</option>
+                                    }
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-dark btn-sm">
+                                Save role
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

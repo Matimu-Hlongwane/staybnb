@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Find your next stay";
+}
+
+<section class="container py-5">
+    <div class="row align-items-center g-4 py-4">
+        <div class="col-lg-7">
+            <p class="text-uppercase fw-semibold text-primary mb-2">
+                Welcome to Staybnb
+            </p>
+            <h1 class="display-3 fw-bold">
+                Feel at home, wherever you go.
+            </h1>
+            <p class="lead text-muted mt-3">
+                Discover places to stay, plan your next trip, and make
+                yourself at home with Staybnb.
+            </p>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <a asp-controller="Properties" asp-action="Index"
+                   class="btn btn-primary btn-lg">
+                    Explore stays
+                </a>
+                <a asp-controller="HostApplications" asp-action="Create"
+                   class="btn btn-outline-secondary btn-lg">
+                    Become a host
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="rounded-4 bg-light p-5 text-center">
+                <h2 class="h3">Your next stay starts here.</h2>
+                <p class="text-muted mb-0">
+                    Browse available properties and find a place that suits
+                    your journey.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

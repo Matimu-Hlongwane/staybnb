@@ -1,0 +1,28 @@
+@model IEnumerable<Staybnb.Models.StaybnbActivityLog>
+@{
+    ViewData["Title"] = "Activity logs";
+}
+
+<section class="py-4">
+    <h1 class="fw-bold mb-2">Activity logs</h1>
+    <p class="text-secondary mb-4">Recent recorded system activity. Latest 500 entries are shown.</p>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr><th>Date</th><th>User ID</th><th>Action</th><th>Details</th></tr>
+            </thead>
+            <tbody>
+            @foreach (var log in Model)
+            {
+                <tr>
+                    <td>@log.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                    <td><small>@(log.UserId ?? "System")</small></td>
+                    <td>@log.Action</td>
+                    <td>@log.Details</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

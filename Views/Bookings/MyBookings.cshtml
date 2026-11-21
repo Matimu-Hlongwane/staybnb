@@ -1,0 +1,55 @@
+@model IEnumerable<Staybnb.Models.Booking>
+
+@{
+    ViewData["Title"] = "My bookings";
+}
+
+<section class="py-4">
+    <h1 class="fw-bold mb-2">My bookings</h1>
+    <p class="text-secondary mb-4">Track the status of your stay requests.</p>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="p-5 text-center rounded-4" style="background:#f4f0e9;">
+            <h2 class="h5">No bookings yet</h2>
+            <p class="text-secondary">Explore stays to request your first booking.</p>
+            <a asp-controller="Properties" asp-action="Index" class="btn btn-dark">
+                Explore stays
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var booking in Model)
+            {
+                <div class="col-12">
+                    <article class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-wrap justify-content-between gap-2">
+                                <div>
+                                    <h2 class="h5 fw-bold">@(booking.Property?.Title ?? "Property")</h2>
+                                    <p class="text-secondary mb-1">@(booking.Property?.City ?? "")</p>
+                                </div>
+                                <span class="badge bg-secondary align-self-start">@booking.Status</span>
+                            </div>
+                            <p class="mb-1">
+                                <strong>Check-in:</strong> @booking.CheckIn.ToString("dd MMM yyyy")
+                                &nbsp; <strong>Check-out:</strong> @booking.CheckOut.ToString("dd MMM yyyy")
+                            </p>
+                            <p class="mb-1"><strong>Travellers:</strong> @booking.TravellerCount</p>
+                            <p class="mb-0"><strong>Total:</strong>
+                                @booking.TotalPrice.ToString("C", new System.Globalization.CultureInfo("en-ZA"))
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    }
+</section>

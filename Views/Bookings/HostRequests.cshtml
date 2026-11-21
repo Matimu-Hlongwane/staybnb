@@ -1,0 +1,72 @@
+@model IEnumerable<Staybnb.Models.Booking>
+
+@{
+    ViewData["Title"] = "Booking requests";
+}
+
+<section class="py-4">
+    <h1 class="fw-bold mb-2">Booking requests</h1>
+    <p class="text-secondary mb-4">Review requests for your properties.</p>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="p-5 text-center rounded-4" style="background:#f4f0e9;">
+            <h2 class="h5">No booking requests</h2>
+            <p class="text-secondary mb-0">New requests will appear here.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var booking in Model)
+            {
+                <div class="col-12">
+                    <article class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-wrap justify-content-between gap-2">
+                                <div>
+                                    <h2 class="h5 fw-bold">@(booking.Property?.Title ?? "Property")</h2>
+                                    <p class="text-secondary mb-1">Guest: @(booking.GuestUser?.Email ?? "Guest")</p>
+                                    <p class="mb-1">
+                                        @booking.CheckIn.ToString("dd MMM yyyy") –
+                                        @booking.CheckOut.ToString("dd MMM yyyy")
+                                    </p>
+                                    <p class="mb-2">
+                                        @booking.TravellerCount traveller(s) ·
+                                        @booking.TotalPrice.ToString("C", new System.Globalization.CultureInfo("en-ZA"))
+                                    </p>
+                                    <span class="badge bg-secondary">@booking.Status</span>
+                                </div>
+
+                                @if (booking.Status == "Pending")
+                                {
+                                    <div class="d-flex gap-2 align-items-start">
+                                        <form asp-action="Respond" method="post">
+                                            <input type="hidden" name="id" value="@booking.Id" />
+                                            <input type="hidden" name="decision" value="Approve" />
+                                            <button type="submit" class="btn btn-dark">Approve</button>
+                                        </form>
+                                        <form asp-action="Respond" method="post">
+                                            <input type="hidden" name="id" value="@booking.Id" />
+                                            <input type="hidden" name="decision" value="Reject" />
+                                            <button type="submit" class="btn btn-outline-danger">Reject</button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    }
+</section>

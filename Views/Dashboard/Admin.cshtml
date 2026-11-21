@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="py-4">
+    <p class="text-uppercase small fw-semibold" style="color:#a45f3b;letter-spacing:2px;">Staybnb Management</p>
+    <h1 class="display-5 fw-bold">Admin dashboard</h1>
+    <p class="text-secondary">Review host applications and monitor platform activity.</p>
+
+    <div class="row g-3 my-3">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 rounded-4 p-3 h-100" style="background:#f4f0e9;">
+                <p class="text-secondary mb-1">Total applications</p>
+                <h2>@ViewBag.TotalCount</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 rounded-4 p-3 h-100" style="background:#fff0d8;">
+                <p class="text-secondary mb-1">Awaiting review</p>
+                <h2>@ViewBag.PendingCount</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 rounded-4 p-3 h-100" style="background:#e0eee6;">
+                <p class="text-secondary mb-1">Approved</p>
+                <h2>@ViewBag.ApprovedCount</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 rounded-4 p-3 h-100" style="background:#f3e4e0;">
+                <p class="text-secondary mb-1">Rejected</p>
+                <h2>@ViewBag.RejectedCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+        <h2 class="h4">Host applications</h2>
+        <p class="text-secondary">Review applicant details, inspect submitted properties and photos, then approve or reject applications.</p>
+        <div>
+            <a asp-controller="AdminApplications" asp-action="Index" class="btn btn-dark">Review applications</a>
+        </div>
+    </div>
+</div>

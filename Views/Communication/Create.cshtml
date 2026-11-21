@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "New message";
+}
+
+<section class="py-4">
+    <h1 class="fw-bold mb-2">New message</h1>
+    <p class="text-secondary mb-4">Send a message to another registered Staybnb user.</p>
+
+    <div class="card border-0 shadow-sm rounded-4" style="max-width:650px;">
+        <div class="card-body p-4">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <div class="mb-3">
+                    <label for="recipientEmail" class="form-label">Recipient email</label>
+                    <input id="recipientEmail" name="recipientEmail" type="email"
+                           class="form-control" required maxlength="256" />
+                    <span class="text-danger">
+                        @Html.ValidationMessage("recipientEmail")
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <label for="body" class="form-label">Message</label>
+                    <textarea id="body" name="body" class="form-control" rows="6"
+                              maxlength="2000" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark">Send message</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</section>

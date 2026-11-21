@@ -1,0 +1,97 @@
+@model IEnumerable<Staybnb.Models.HostApplication>
+
+@{
+    ViewData["Title"] = "My Host Applications";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1>My Host Applications</h1>
+            <p class="text-muted">
+                Track the status of your property submissions.
+            </p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            New application
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] is string message)
+    {
+        <div class="alert alert-success" role="alert">
+            @message
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <h5>No applications yet</h5>
+                <p>Submit a property to start your hosting journey.</p>
+                <a asp-action="Create" class="btn btn-primary">
+                    Apply to become a host
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var application in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        @if (application.Images.Any())
+                        {
+                            <img src="@application.Images.First().ImageUrl"
+                                 class="card-img-top"
+                                 alt="@application.Title"
+                                 style="height:220px;object-fit:cover;" />
+                        }
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @application.Title
+                            </h5>
+
+                            <p class="text-muted mb-2">
+                                @application.City · @application.PropertyType
+                            </p>
+
+                            <p class="fw-bold">
+                                R @application.PricePerNight.ToString("N2")
+                                <small class="text-muted">/ night</small>
+                            </p>
+
+                            <p>
+                                Status:
+                                @if (application.Status == "Approved")
+                                {
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                                else if (application.Status == "Rejected")
+                                {
+                                    <span class="badge bg-danger">Rejected</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        @application.Status
+                                    </span>
+                                }
+                            </p>
+
+                            <small class="text-muted">
+                                Submitted:
+                                @application.SubmittedAt.ToLocalTime()
+                                    .ToString("dd MMM yyyy, HH:mm")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
